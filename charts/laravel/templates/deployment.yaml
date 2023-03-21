@@ -29,9 +29,9 @@ spec:
       volumes:
         - name: app
           emptyDir: {}
-        - name: env
-          secret:
-            secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+        # - name: env
+        #   secret:
+        #     secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
         - name: nginx-config
           configMap:
             name: {{ if .Values.nginx.configName }} {{ .Values.nginx.configName }} {{ else }} {{ .Release.Name }}-nginx-config {{ end }}
@@ -69,12 +69,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
           volumeMounts:
             - name: app
               mountPath: /app
-            - name: env
-              mountPath: /tmp/.env
-              subPath: .env
+            # - name: env
+            #   mountPath: /tmp/.env
+            #   subPath: .env
             - name: php-ini-config
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini
@@ -112,19 +115,23 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - cp /tmp/.env /var/www/html/.env && cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+                  #- cp /tmp/.env /var/www/html/.env && cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+                  - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
         {{- if .Values.scheduler.enabled }}
         - name: scheduler
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
           command:
             {{- toYaml .Values.scheduler.command | nindent 12 }}
           volumeMounts:
-            - name: env
-              mountPath: /tmp/.env
-              subPath: .env
+            # - name: env
+            #   mountPath: /tmp/.env
+            #   subPath: .env
             - name: php-ini-config
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini
@@ -159,7 +166,8 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - cp /tmp/.env /var/www/html/.env && cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+                  #- cp /tmp/.env /var/www/html/.env && cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+                  - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
         {{- end }}
         - name: nginx
           securityContext:

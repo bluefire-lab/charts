@@ -6,7 +6,7 @@ Bluefire Helm Repo
 To install the charts repository:
 
 ```bash
-$ helm repo add renoki-co https://helm.bluefire.cloud
+$ helm repo add bluefire https://helm.bluefire.cloud
 $ helm repo update
 ```
 
