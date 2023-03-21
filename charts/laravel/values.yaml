@@ -222,6 +222,8 @@ rbac:
   #      - get
   #      - list
 
+deploymentAnnotations: {}
+
 podAnnotations: {}
 
 podSecurityContext: {}
