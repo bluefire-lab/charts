@@ -1,0 +1,24 @@
+{{- if .Values.infisical.create }}
+apiVersion: secrets.infisical.com/v1alpha1
+kind: InfisicalSecret
+metadata:
+  # Name of of this InfisicalSecret resource
+  name: {{ include "laravel.fullname" . }}
+spec:
+  # The host that should be used to pull secrets from. If left empty, the value specified in Global configuration will be used
+  hostAPI: {{ .Values.infisical.hostAPI }}
+
+  # The Kubernetes secret the stores the Infisical token
+  tokenSecretReference:
+    # Kubernetes secret name
+    secretName: name: {{ include "laravel.fullname" . }}-infisical
+    # The secret namespace
+    secretNamespace: {{ .Release.Namespace }}
+
+  # The Kubernetes secret that Infisical Operator will create and populate with secrets from the above project
+  managedSecretReference:
+    # The name of managed Kubernetes secret that should be created
+    secretName: name: {{ include "laravel.fullname" . }}-env
+    # The namespace the managed secret should be installed in
+    secretNamespace: {{ .Release.Namespace }}
+{{- end }}
