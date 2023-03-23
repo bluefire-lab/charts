@@ -117,7 +117,7 @@ spec:
             postStart:
               exec:
                 command:
-                  {{- toYaml .Values.app.command | nindent 12 }}                  
+                  {{- toYaml .Values.app.command | nindent 18 }}                  
         {{- if .Values.scheduler.enabled }}
         - name: scheduler
           securityContext:
