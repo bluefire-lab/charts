@@ -83,10 +83,11 @@ app:
     #   cpu: 40m
     #   memory: 32Mi
 
-  command:
-    - /bin/sh
-    - -c
-    - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
+  postStart:
+    command:
+      - /bin/sh
+      - -c
+      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
 
 # Configure the in-pod NGINX container. This container will
 # decode the fastcgi process from the PHP-FPM container
@@ -312,6 +313,12 @@ scheduler:
   # When enabling it, the chart will deploy a sidecar container in the same pod that
   # will run the "schedule:run" command each minute.
   enabled: true
+
+  postStart:
+    command:
+      - /bin/sh
+      - -c
+      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
 
   command:
     - php
