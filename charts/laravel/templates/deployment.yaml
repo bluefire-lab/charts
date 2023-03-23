@@ -117,10 +117,7 @@ spec:
             postStart:
               exec:
                 command:
-                  - /bin/sh
-                  - -c
-                  #- cp /tmp/.env /var/www/html/.env && cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
-                  - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+                  {{- toYaml .Values.app.command | nindent 12 }}                  
         {{- if .Values.scheduler.enabled }}
         - name: scheduler
           securityContext:
