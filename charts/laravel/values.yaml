@@ -347,6 +347,10 @@ scheduler:
 infisical:
   create: true
   hostAPI: ""
+  secretsScope:
+    envSlug: prod
+    secretsPath: "/"
+
 
 phpFpmConf:
   # Specify the Config name to pull the laravel.conf configuration from.

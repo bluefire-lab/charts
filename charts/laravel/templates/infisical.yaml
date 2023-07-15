@@ -8,12 +8,17 @@ spec:
   # The host that should be used to pull secrets from. If left empty, the value specified in Global configuration will be used
   hostAPI: {{ .Values.infisical.hostAPI }}
 
-  # The Kubernetes secret the stores the Infisical token
-  tokenSecretReference:
-    # Kubernetes secret name
-    secretName: {{ include "laravel.fullname" . }}-infisical
-    # The secret namespace
-    secretNamespace: {{ .Release.Namespace }}
+  authentication:
+
+    serviceToken:
+
+      serviceTokenSecretReference:
+        secretName: {{ include "laravel.fullname" . }}-infisical
+        secretNamespace: {{ .Release.Namespace }}
+
+      secretsScope:
+        envSlug: {{ .Values.infisical.secretsScope.envSlug }}
+        secretsPath: {{ .Values.infisical.secretsScope.secretsPath }}
 
   # The Kubernetes secret that Infisical Operator will create and populate with secrets from the above project
   managedSecretReference:
