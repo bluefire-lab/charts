@@ -3,6 +3,16 @@ entries:
   laravel:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-03-24T12:47:08.571187452Z"
+    description: Helm chart scaffolding for Laravel applications.
+    digest: 8dd0aac5d8e345f9a2d4f8d82e31f47a60230b846ae536019e58d3e885afb0dc
+    name: laravel
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/laravel-1.0.10/laravel-1.0.10.tgz
+    version: 1.0.10
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-03-23T12:49:54.932952409Z"
     description: Helm chart scaffolding for Laravel applications.
     digest: beaea8682b03d0b5a7eb25dcd9fa03f92be10037a2e6d9207133dd9658d71361
@@ -101,4 +111,4 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/laravel-1.0.0/laravel-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-23T12:49:54.932998009Z"
+generated: "2023-03-24T12:47:08.571218051Z"
