@@ -121,4 +121,15 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/laravel-1.0.0/laravel-1.0.0.tgz
     version: 1.0.0
-generated: "2023-07-15T21:44:07.176198881Z"
+  wordpress:
+  - apiVersion: v2
+    appVersion: "3.6"
+    created: "2023-08-22T01:52:21.012795065Z"
+    description: A Helm chart for Kubernetes
+    digest: de39830279f031e221b5ced0e7b606dea0da7e44c25dc9deeaf92e5d5bea23bd
+    name: wordpress
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.1.0/wordpress-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-08-22T01:52:21.012835565Z"
