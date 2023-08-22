@@ -35,7 +35,7 @@ spec:
         - name: {{ .Chart.Name }}
           volumeMounts:
             - mountPath: /opt/wordpress/wp-content
-              name: {{ include "wordpress.fullname" . }}
+              name: wp-content
           envFrom:
             - secretRef:
                 name: {{ include "wordpress.fullname" . }}-salts
