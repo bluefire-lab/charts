@@ -28,6 +28,12 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
+postStart:
+  command:
+    - /bin/sh
+    - -c
+    - cp -r /opt/wordpress/. /opt/wordpress-temp
+
 securityContext: {}
   # capabilities:
   #   drop:
@@ -38,7 +44,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 9090
 
 ingress:
   enabled: false
@@ -216,3 +222,21 @@ startupProbe:
   timeoutSeconds: 5
   failureThreshold: 6
   successThreshold: 1    
+
+
+nginx:
+  image:
+    repository: ghcr.io/bluefire-lab/wordpress-nginx
+    tag: main-1fb5ca5
+    pullPolicy: IfNotPresent
+  
+  phpEndpoint: "localhost:8080"
+  port: 9090
+
+  resources: {}
+  #  limits:
+  #    cpu: 100m
+  #    memory: 128Mi
+  #  requests:
+  #    cpu: 100m
+  #    memory: 128Mi

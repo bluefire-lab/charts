@@ -27,28 +27,67 @@ spec:
       serviceAccountName: {{ include "wordpress.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
       volumes:
+        - name: wordpress
+          emptyDir: {}
         - name: wp-content
           persistentVolumeClaim:
             claimName: {{ include "wordpress.fullname" . }}
+        
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: wordpress
+              readOnly: true         
+            - mountPath: /usr/share/nginx/html/wp-content
+              name: wp-content
+          env:
+            - name: PHP_ENDPOINT
+              value: {{ .Values.nginx.phpEndpoint }}
+            - name: NGINX_PORT
+              value: {{ .Values.nginx.port }}  
+            - name: HOST
+              {{- with (first .Values.ingress.hosts) }}
+              value: {{ .host }}
+              {{- end }}
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.nginx.port }}
+              protocol: TCP              
+
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+
+        - name: {{ .Chart.Name }}-unit
           volumeMounts:
             - mountPath: /opt/wordpress/wp-content
               name: wp-content
+            - mountPath: /opt/wordpress-nginx
+              name: wordpress
           envFrom:
             - secretRef:
                 name: {{ include "wordpress.fullname" . }}-salts
             - secretRef:
                 name: {{ .Release.Name | trunc 63 | trimSuffix "-" }}-db
 
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.postStart.command | nindent 18 }}          
+
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: php
+              containerPort: 8080
               protocol: TCP
 
           {{- if .Values.customLivenessProbe }}
