@@ -68,6 +68,11 @@ spec:
               name: wp-content
             - mountPath: /opt/wordpress-nginx
               name: wordpress
+          env:
+            - name: WORDPRESS_FORCE_HTTPS
+              value: "{{ if .Values.wordpress.scheme == "https" }}true{{ else }}false{{ end }}"
+            - name: WP_AUTO_UPDATE_CORE
+              value: "{{ .Values.wordpress.autoUpdateCore }}"
           envFrom:
             - secretRef:
                 name: {{ include "wordpress.fullname" . }}-salts

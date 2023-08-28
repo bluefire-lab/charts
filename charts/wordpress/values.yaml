@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/bluefire-lab/wordpress-unit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: main-a081039
+  tag: main-15c1cef
 
 imagePullSecrets: []
 nameOverride: ""
@@ -127,9 +127,9 @@ persistence:
   # Url to use as source to restore a Wordpress. 
   restoreUrl: " "
 
-## @param wordpressScheme Scheme to use to generate WordPress URLs
-##
-wordpressScheme: http  
+wordpress:
+  scheme: https
+  autoUpdateCore: true
 
 ## Configure extra options for WordPress containers' liveness, readiness and startup probes
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
