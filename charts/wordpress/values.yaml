@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/bluefire-lab/wordpress-unit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: main-75d6fab
+  tag: main-b6e0b69
 
 imagePullSecrets: []
 nameOverride: ""
@@ -32,7 +32,7 @@ postStart:
   command:
     - /bin/sh
     - -c
-    - "cp -r /opt/wordpress/* /opt/wordpress-temp/"
+    - echo "Copying..." && cp -r /opt/wordpress/* /opt/wordpress-nginx/ && echo "Done"
 
 securityContext: {}
   # capabilities:
