@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/bluefire-lab/wordpress-unit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: main-b6e0b69
+  tag: main-a081039
 
 imagePullSecrets: []
 nameOverride: ""
