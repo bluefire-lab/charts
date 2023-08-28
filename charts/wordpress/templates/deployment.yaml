@@ -49,7 +49,7 @@ spec:
             - name: PHP_ENDPOINT
               value: {{ .Values.nginx.phpEndpoint }}
             - name: NGINX_PORT
-              value: {{ .Values.nginx.port }}  
+              value: "{{ .Values.nginx.port }}"
             - name: HOST
               {{- with (first .Values.ingress.hosts) }}
               value: {{ .host }}

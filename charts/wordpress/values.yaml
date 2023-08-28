@@ -231,7 +231,7 @@ nginx:
     pullPolicy: IfNotPresent
   
   phpEndpoint: 'localhost:8080'
-  port: '9090'
+  port: 9090
 
   resources: {}
   #  limits:
