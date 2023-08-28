@@ -230,8 +230,8 @@ nginx:
     tag: main-1fb5ca5
     pullPolicy: IfNotPresent
   
-  phpEndpoint: "localhost:8080"
-  port: 9090
+  phpEndpoint: 'localhost:8080'
+  port: '9090'
 
   resources: {}
   #  limits:
