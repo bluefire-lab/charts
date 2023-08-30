@@ -87,6 +87,19 @@ tolerations: []
 
 affinity: {}
 
+## @param updateStrategy.type WordPress deployment strategy type
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+## NOTE: Set it to `Recreate` if you use a PV that cannot be mounted on multiple pods
+## e.g:
+## updateStrategy:
+##  type: RollingUpdate
+##  rollingUpdate:
+##    maxSurge: 25%
+##    maxUnavailable: 25%
+##
+updateStrategy:
+  type: RollingUpdate
+
 ## @section Persistence Parameters
 
 ## Persistence Parameters
