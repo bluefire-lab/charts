@@ -240,7 +240,7 @@ startupProbe:
 nginx:
   image:
     repository: ghcr.io/bluefire-lab/wordpress-nginx
-    tag: main-a5b10a5
+    tag: main-b71ccd8
     pullPolicy: IfNotPresent
   
   phpEndpoint: 'localhost:9090'
