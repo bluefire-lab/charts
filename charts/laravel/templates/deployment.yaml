@@ -170,6 +170,55 @@ spec:
                 command:
                   {{- toYaml .Values.scheduler.postStart.command | nindent 18 }}
         {{- end }}
+        {{- if .Values.horizon.enabled }}
+        - name: horizon
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+          command:
+            {{- toYaml .Values.horizon.command | nindent 12 }}
+          volumeMounts:
+            # - name: env
+            #   mountPath: /tmp/.env
+            #   subPath: .env
+            - name: php-ini-config
+              mountPath: /usr/local/etc/php/php.ini
+              subPath: php.ini
+            {{- with .Values.app.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.horizon.healthcheck.enabled }}
+          readinessProbe:
+            exec:
+              command:
+                - php
+                - -v
+            initialDelaySeconds: {{ .Values.scheduler.healthcheck.period }}
+            periodSeconds: {{ .Values.scheduler.healthcheck.period }}
+          livenessProbe:
+            exec:
+              command:
+                - php
+                - -v
+            initialDelaySeconds: {{ .Values.scheduler.healthcheck.period }}
+            periodSeconds: {{ .Values.scheduler.healthcheck.period }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.horizon.resources | nindent 12 }}
+          {{- with .Values.app.extraEnv }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.horizon.postStart.command | nindent 18 }}
+        {{- end }}        
         - name: nginx
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}

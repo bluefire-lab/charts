@@ -344,6 +344,41 @@ scheduler:
     enabled: true
     period: 5
 
+horizon:
+  # When enabling it, the chart will deploy a sidecar container in the same pod that
+  # will run the "horizon" command.
+  enabled: false
+
+  postStart:
+    command:
+      - /bin/sh
+      - -c
+      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
+
+  command:
+    - php
+    - artisan
+    - horizon
+
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # Configure the PHP healthcheck for the process.
+  # If enabled, Kubernetes will periodically check the container
+  # to see if it's still responsive.
+  healthcheck:
+    enabled: true
+    period: 5    
+
 infisical:
   create: true
   hostAPI: ""
