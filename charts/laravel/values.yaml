@@ -382,10 +382,10 @@ horizon:
 infisical:
   create: true
   hostAPI: ""
+  authType: "token"
   secretsScope:
     envSlug: prod
     secretsPath: "/"
-
 
 phpFpmConf:
   # Specify the Config name to pull the laravel.conf configuration from.
