@@ -12,7 +12,7 @@ spec:
     {{- if eq .Values.infisical.authType "token" }}
     serviceToken:
       serviceTokenSecretReference:
-        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ include "laravel.fullname" . }}-infisical {{ end }}
+        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ .Release.Name }}-infisical {{ end }}
         secretNamespace: {{ .Release.Namespace }}
       secretsScope:
         envSlug: {{ .Values.infisical.secretsScope.envSlug }}
@@ -20,7 +20,7 @@ spec:
     {{- else if eq .Values.infisical.authType "universal" }}
     universalAuth:
       credentialsRef:
-        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ include "laravel.fullname" . }}-infisical {{ end }}
+        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ .Release.Name }}-infisical {{ end }}
         secretNamespace: {{ .Release.Namespace }}    
       secretsScope:
         projectSlug: {{ .Values.infisical.secretsScope.projectSlug }}
@@ -32,7 +32,7 @@ spec:
   # The Kubernetes secret that Infisical Operator will create and populate with secrets from the above project
   managedSecretReference:
     # The name of managed Kubernetes secret that should be created
-    secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ include "laravel.fullname" . }}-env {{ end }}
+    secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
     # The namespace the managed secret should be installed in
     secretNamespace: {{ .Release.Namespace }}
 {{- end }}
