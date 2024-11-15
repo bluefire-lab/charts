@@ -386,6 +386,8 @@ infisical:
   secretsScope:
     envSlug: prod
     secretsPath: "/"
+  managedSecretReference:
+    creationPolicy: "Orphan" # Use "Orphan" or "Owner"
 
 phpFpmConf:
   # Specify the Config name to pull the laravel.conf configuration from.
