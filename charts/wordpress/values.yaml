@@ -81,6 +81,15 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+vpa:
+  enabled: false
+  minAllowed:
+    cpu: 50m
+    memory: 50Mi
+  maxAllowed:
+    cpu: 2000m
+    memory: 2Gi
+
 nodeSelector: {}
 
 tolerations: []
@@ -114,11 +123,11 @@ persistence:
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
   ##
-  storageClass: "efs"
+  storageClass: null
   ## @param persistence.accessModes [array] Persistent Volume access modes
   ##
   accessModes:
-    - "ReadWriteMany"
+    - "ReadWriteOnce"
   ## @param persistence.size Persistent Volume size
   ##
   size: 10Gi
@@ -135,9 +144,9 @@ persistence:
   ##   matchLabels:
   ##     app: my-app
   ##
-  selector: {}  
+  selector: {}
 
-  # Url to use as source to restore a Wordpress. 
+  # Url to use as source to restore a Wordpress.
   restoreUrl: " "
 
 wordpress:
@@ -234,7 +243,7 @@ startupProbe:
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 6
-  successThreshold: 1    
+  successThreshold: 1
 
 
 nginx:
@@ -242,7 +251,7 @@ nginx:
     repository: ghcr.io/bluefire-lab/wordpress-nginx
     tag: main-b71ccd8
     pullPolicy: IfNotPresent
-  
+
   phpEndpoint: 'localhost:9090'
   port: 8080
 

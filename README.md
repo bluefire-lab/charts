@@ -21,3 +21,7 @@ $ helm install some-release bluefire/<chart>
 ```bash
 $ helm search repo
 ```
+
+##For more information check:
+
+https://github.com/bluefire-lab/charts
