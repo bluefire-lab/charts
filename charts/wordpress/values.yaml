@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/bluefire-lab/wordpress-unit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: main-dfecd8b
+  tag: main-18fbf99
 
 imagePullSecrets: []
 nameOverride: ""
@@ -249,7 +249,7 @@ startupProbe:
 nginx:
   image:
     repository: ghcr.io/bluefire-lab/wordpress-nginx
-    tag: main-b71ccd8
+    tag: main-78b3094
     pullPolicy: IfNotPresent
 
   phpEndpoint: 'localhost:9090'
