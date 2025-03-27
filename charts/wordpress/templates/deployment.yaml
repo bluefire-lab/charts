@@ -33,20 +33,16 @@ spec:
 
       volumes:
         - name: wordpress
-          emptyDir: {}
-        - name: wp-content
           persistentVolumeClaim:
             claimName: {{ include "wordpress.fullname" . }}
-        
+
       containers:
         - name: {{ .Chart.Name }}-nginx
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           volumeMounts:
             - mountPath: /usr/share/nginx/html
-              name: wordpress    
-            - mountPath: /usr/share/nginx/html/wp-content
-              name: wp-content
+              name: wordpress
           env:
             - name: PHP_ENDPOINT
               value: {{ .Values.nginx.phpEndpoint }}
@@ -60,16 +56,14 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-              protocol: TCP    
+              protocol: TCP
 
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
 
         - name: {{ .Chart.Name }}-unit
           volumeMounts:
-            - mountPath: /opt/wordpress/wp-content
-              name: wp-content
-            - mountPath: /opt/wordpress-nginx
+            - mountPath: /opt/wordpress
               name: wordpress
           env:
             - name: WORDPRESS_FORCE_HTTPS
@@ -86,7 +80,7 @@ spec:
             postStart:
               exec:
                 command:
-                  {{- toYaml .Values.postStart.command | nindent 18 }}          
+                  {{- toYaml .Values.postStart.command | nindent 18 }}
 
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
