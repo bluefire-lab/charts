@@ -183,6 +183,16 @@ entries:
     version: 1.0.0
   wordpress:
   - apiVersion: v2
+    appVersion: 4.0.3
+    created: "2025-03-27T13:03:39.814067405Z"
+    description: A Helm chart for Kubernetes
+    digest: 1237b0314b94320043ac77c912adf1add70843050e590f7db8cac174ac098e3d
+    name: wordpress
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.2.10/wordpress-0.2.10.tgz
+    version: 0.2.10
+  - apiVersion: v2
     appVersion: 4.0.1
     created: "2025-03-27T12:56:31.540890598Z"
     description: A Helm chart for Kubernetes
@@ -402,4 +412,4 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.1.0/wordpress-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-27T12:56:31.541098494Z"
+generated: "2025-03-27T13:03:39.814265334Z"
