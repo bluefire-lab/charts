@@ -29,10 +29,11 @@ podSecurityContext: {}
   # fsGroup: 2000
 
 postStart:
-  command: []
-    # - /bin/sh
-    # - -c
-    # - echo "Copying..." && cp -r /opt/wordpress/* /opt/wordpress-nginx/ && echo "Done"
+  command:
+    - /bin/sh
+    - -c
+    - echo "Started!"
+    #- echo "Copying..." && cp -r /opt/wordpress/* /opt/wordpress-nginx/ && echo "Done"
 
 securityContext: {}
   # capabilities:
