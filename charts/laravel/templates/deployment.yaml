@@ -82,9 +82,6 @@ spec:
           volumeMounts:
             - name: app
               mountPath: /app
-            # - name: env
-            #   mountPath: /tmp/.env
-            #   subPath: .env
             - name: php-ini-config
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini
@@ -133,9 +130,8 @@ spec:
           command:
             {{- toYaml .Values.scheduler.command | nindent 12 }}
           volumeMounts:
-            # - name: env
-            #   mountPath: /tmp/.env
-            #   subPath: .env
+            - name: app
+              mountPath: /app
             - name: php-ini-config
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini
@@ -182,9 +178,8 @@ spec:
           command:
             {{- toYaml .Values.horizon.command | nindent 12 }}
           volumeMounts:
-            # - name: env
-            #   mountPath: /tmp/.env
-            #   subPath: .env
+            - name: app
+              mountPath: /app
             - name: php-ini-config
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini
@@ -213,11 +208,63 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{ - if .Values.horizon.postStart.command }}
           lifecycle:
             postStart:
               exec:
                 command:
                   {{- toYaml .Values.horizon.postStart.command | nindent 18 }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.queue.enabled }}
+        - name: queue
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+          command:
+            {{- toYaml .Values.queue.command | nindent 12 }}
+          volumeMounts:
+            - name: app
+              mountPath: /app
+            - name: php-ini-config
+              mountPath: /usr/local/etc/php/php.ini
+              subPath: php.ini
+            {{- with .Values.app.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.queue.healthcheck.enabled }}
+          readinessProbe:
+            exec:
+              command:
+                - php
+                - -v
+            initialDelaySeconds: {{ .Values.scheduler.healthcheck.period }}
+            periodSeconds: {{ .Values.scheduler.healthcheck.period }}
+          livenessProbe:
+            exec:
+              command:
+                - php
+                - -v
+            initialDelaySeconds: {{ .Values.scheduler.healthcheck.period }}
+            periodSeconds: {{ .Values.scheduler.healthcheck.period }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.queue.resources | nindent 12 }}
+          {{- with .Values.app.extraEnv }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{ - if .Values.queue.postStart.command }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.queue.postStart.command | nindent 18 }}
+          {{- end }}
         {{- end }}
         - name: nginx
           securityContext:

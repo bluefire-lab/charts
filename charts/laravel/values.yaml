@@ -87,7 +87,7 @@ app:
     command:
       - /bin/sh
       - -c
-      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
+      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
 
 # Configure the in-pod NGINX container. This container will
 # decode the fastcgi process from the PHP-FPM container
@@ -318,12 +318,45 @@ scheduler:
     command:
       - /bin/sh
       - -c
-      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
+      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
 
   command:
     - php
     - artisan
     - schedule:work
+
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # Configure the PHP healthcheck for the process.
+  # If enabled, Kubernetes will periodically check the container
+  # to see if it's still responsive.
+  healthcheck:
+    enabled: true
+    period: 5
+
+
+queue:
+  # When enabling it, the chart will deploy a sidecar container in the same pod that
+  # will run the "queue" command.
+  enabled: true
+
+  postStart:
+    command: []
+
+  command:
+    - php
+    - artisan
+    - queue:work
 
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -350,10 +383,7 @@ horizon:
   enabled: false
 
   postStart:
-    command:
-      - /bin/sh
-      - -c
-      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh    
+    command: []
 
   command:
     - php
@@ -377,7 +407,7 @@ horizon:
   # to see if it's still responsive.
   healthcheck:
     enabled: true
-    period: 5    
+    period: 5
 
 infisical:
   create: true
