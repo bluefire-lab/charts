@@ -208,7 +208,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{ - if .Values.horizon.postStart.command }}
+          {{- if .Values.horizon.postStart.command }}
           lifecycle:
             postStart:
               exec:
@@ -258,7 +258,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{ - if .Values.queue.postStart.command }}
+          {{- if .Values.queue.postStart.command }}
           lifecycle:
             postStart:
               exec:
