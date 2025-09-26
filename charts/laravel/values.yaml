@@ -315,10 +315,7 @@ scheduler:
   enabled: true
 
   postStart:
-    command:
-      - /bin/sh
-      - -c
-      - cp -r /var/www/html/. /app && cd /var/www/html && sh deploy.sh
+    command: []
 
   command:
     - php
