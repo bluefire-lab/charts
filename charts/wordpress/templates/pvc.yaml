@@ -1,6 +1,18 @@
 {{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
-kind: PersistentVolumeClaim
+{{- if .Values.persistence.createSnapshot }}
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: {{ .Values.persistence.dataSource.name }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  volumeSnapshotClassName: ebs-csi-snapshot-class
+  source:
+    snapshotHandle: {{ .Values.persistence.snapshotHandle }}
+---
+{{- end }}
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: {{ include "wordpress.fullname" . }}
   namespace: {{ .Release.Namespace | quote }}
@@ -16,8 +28,11 @@ spec:
   {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistence.size | quote }}  
+      storage: {{ .Values.persistence.size | quote }}
   {{- if .Values.persistence.dataSource }}
-  dataSource: {{- include "common.tplvalues.render" (dict "value" .Values.persistence.dataSource "context" $) | nindent 4 }}
+  dataSource:
+    name: {{ .Values.persistence.dataSource.name }}
+    kind: {{ .Values.persistence.dataSource.kind | default "VolumeSnapshot" }}
+    apiGroup: {{ .Values.persistence.dataSource.apiGroup | default "snapshot.storage.k8s.io" }}
   {{- end }}
 {{- end }}
