@@ -1,0 +1,39 @@
+{{- if .Values.infisical.create }}
+apiVersion: secrets.infisical.com/v1alpha1
+kind: InfisicalSecret
+metadata:
+  # Name of of this InfisicalSecret resource
+  name: {{ include "wordpress.fullname" . }}
+
+spec:
+  # The host that should be used to pull secrets from. If left empty, the value specified in Global configuration will be used
+  hostAPI: {{ .Values.infisical.hostAPI }}
+  authentication:
+    {{- if eq .Values.infisical.authType "token" }}
+    serviceToken:
+      serviceTokenSecretReference:
+        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ .Release.Name }}-infisical {{ end }}
+        secretNamespace: {{ .Release.Namespace }}
+      secretsScope:
+        envSlug: {{ .Values.infisical.secretsScope.envSlug }}
+        secretsPath: {{ .Values.infisical.secretsScope.secretsPath }}
+    {{- else if eq .Values.infisical.authType "universal" }}
+    universalAuth:
+      credentialsRef:
+        secretName: {{ if .Values.infisical.secretName }} {{ .Values.infisical.secretName }} {{ else }} {{ .Release.Name }}-infisical {{ end }}
+        secretNamespace: {{ .Release.Namespace }}
+      secretsScope:
+        projectSlug: {{ .Values.infisical.secretsScope.projectSlug }}
+        envSlug: {{ .Values.infisical.secretsScope.envSlug }}
+        secretsPath: {{ .Values.infisical.secretsScope.secretsPath }}
+        recursive: {{ .Values.infisical.secretsScope.recursive }}
+    {{- end }}
+
+  # The Kubernetes secret that Infisical Operator will create and populate with secrets from the above project
+  managedSecretReference:
+    # The name of managed Kubernetes secret that should be created
+    secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+    # The namespace the managed secret should be installed in
+    secretNamespace: {{ .Release.Namespace }}
+    creationPolicy: {{ .Values.infisical.managedSecretReference.creationPolicy }}
+{{- end }}

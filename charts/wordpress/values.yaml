@@ -245,3 +245,17 @@ nginx:
   #  requests:
   #    cpu: 100m
   #    memory: 128Mi
+
+infisical:
+  create: false
+  hostAPI: ""
+  authType: "universal"
+  secretsScope:
+    envSlug: prod
+    secretsPath: "/"
+  managedSecretReference:
+    creationPolicy: "Orphan" # Use "Orphan" or "Owner"
+
+secrets:
+  createDbSecret: true
+  createSaltsSecret: true

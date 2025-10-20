@@ -73,8 +73,14 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "wordpress.fullname" . }}-salts
+            {{ - if .Values.secrets.createDbSecret }}
             - secretRef:
                 name: {{ .Release.Name | trunc 63 | trimSuffix "-" }}-db
+            {{- end }}
+            {{- if .Values.infisical.create }}
+            - secretRef:
+                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+            {{- end }}
 
           lifecycle:
             postStart:
