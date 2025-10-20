@@ -1,16 +1,40 @@
 {{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
+
 {{- if .Values.persistence.createSnapshot }}
+# ------------------------------------------------------------------
+# VolumeSnapshotContent (imports the AWS snapshot into Kubernetes)
+# ------------------------------------------------------------------
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotContent
+metadata:
+  name: {{ .Values.persistence.dataSource.name }}-content
+spec:
+  deletionPolicy: Retain
+  driver: ebs.csi.aws.com
+  source:
+    snapshotHandle: {{ .Values.persistence.snapshotHandle | quote }}
+  volumeSnapshotRef:
+    name: {{ .Values.persistence.dataSource.name }}
+    namespace: {{ .Release.Namespace }}
+---
+# ------------------------------------------------------------------
+# VolumeSnapshot (binds to the above content)
+# ------------------------------------------------------------------
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
   name: {{ .Values.persistence.dataSource.name }}
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace }}
 spec:
-  volumeSnapshotClassName: ebs-csi-snapshot-class
+  volumeSnapshotClassName: {{ .Values.persistence.volumeSnapshotClassName | default "ebs-csi-snapshot-class" | quote }}
   source:
-    snapshotHandle: {{ .Values.persistence.snapshotHandle }}
+    volumeSnapshotContentName: {{ .Values.persistence.dataSource.name }}-content
 ---
 {{- end }}
+
+# ------------------------------------------------------------------
+# PersistentVolumeClaim (restored from the VolumeSnapshot)
+# ------------------------------------------------------------------
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
