@@ -259,3 +259,4 @@ infisical:
 secrets:
   createDbSecret: true
   createSaltsSecret: true
+  envSecretName: ""

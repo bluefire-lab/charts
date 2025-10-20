@@ -81,7 +81,7 @@ spec:
             {{- end }}
             {{- if .Values.infisical.create }}
             - secretRef:
-                name: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+                name: {{ if .Values.secrets.envSecretName }} {{ .Values.secrets.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
             {{- end }}
 
           lifecycle:
