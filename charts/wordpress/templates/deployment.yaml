@@ -71,9 +71,11 @@ spec:
             - name: WP_AUTO_UPDATE_CORE
               value: "{{ .Values.wordpress.autoUpdateCore }}"
           envFrom:
+            {{- if .Values.secrets.createSaltsSecret }}
             - secretRef:
                 name: {{ include "wordpress.fullname" . }}-salts
-            {{ - if .Values.secrets.createDbSecret }}
+            {{- end }}
+            {{- if .Values.secrets.createDbSecret }}
             - secretRef:
                 name: {{ .Release.Name | trunc 63 | trimSuffix "-" }}-db
             {{- end }}
