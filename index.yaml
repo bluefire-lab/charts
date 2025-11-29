@@ -3,6 +3,16 @@ entries:
   laravel:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-11-29T21:37:45.133420496Z"
+    description: Helm chart scaffolding for Laravel applications.
+    digest: 211ab7f6b3c57da383fe770e743b696ece014f363b3eabacac710e3cd69557e5
+    name: laravel
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/laravel-1.1.8/laravel-1.1.8.tgz
+    version: 1.1.8
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-09-26T22:15:53.908180466Z"
     description: Helm chart scaffolding for Laravel applications.
     digest: 3eece32e9580a04f56d35c06d975b4c8a05086098a1c117a4c0b391cce85e0d8
@@ -221,7 +231,28 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/laravel-1.0.0/laravel-1.0.0.tgz
     version: 1.0.0
+  laravel-frankenphp:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-11-29T21:37:45.392324554Z"
+    description: A Helm chart for Kubernetes
+    digest: 5bffaed594e2ccf8571c2a1bd9b62039c00d73c30a4bfaa0be2964e919e1d59e
+    name: laravel-frankenphp
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/laravel-frankenphp-0.1.1/laravel-frankenphp-0.1.1.tgz
+    version: 0.1.1
   wordpress:
+  - apiVersion: v2
+    appVersion: 4.0.4
+    created: "2025-11-29T21:37:45.529916462Z"
+    description: A Helm chart for Kubernetes
+    digest: cffdc4c1ef9a99ccf97b6b97b7513fead236e4afd67551d442a106791f110006
+    name: wordpress
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.2.20/wordpress-0.2.20.tgz
+    version: 0.2.20
   - apiVersion: v2
     appVersion: 4.0.4
     created: "2025-10-23T12:17:47.397809928Z"
@@ -532,4 +563,4 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.1.0/wordpress-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-23T12:17:47.398138451Z"
+generated: "2025-11-29T21:37:45.53031262Z"
