@@ -67,4 +67,3 @@ jobs:
         timeout-minutes: 5
         run: |
           until curl --silent -XGET --fail http://test.laravel.com; do printf '.'; sleep 1; done
-
