@@ -170,3 +170,5 @@ infisical:
     secretsPath: "/"
   managedSecretReference:
     creationPolicy: "Orphan" # Use "Orphan" or "Owner"
+
+envSecretName: ""

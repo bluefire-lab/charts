@@ -32,7 +32,7 @@ spec:
   # The Kubernetes secret that Infisical Operator will create and populate with secrets from the above project
   managedSecretReference:
     # The name of managed Kubernetes secret that should be created
-    secretName: {{ if .Values.app.envSecretName }} {{ .Values.app.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+    secretName: {{ if .Values.envSecretName }} {{ .Values.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
     # The namespace the managed secret should be installed in
     secretNamespace: {{ .Release.Namespace }}
     creationPolicy: {{ .Values.infisical.managedSecretReference.creationPolicy }}
