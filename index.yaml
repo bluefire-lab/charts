@@ -234,6 +234,16 @@ entries:
   laravel-frankenphp:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-11-30T02:39:22.148687074Z"
+    description: A Helm chart for Kubernetes
+    digest: 3171ea9e8702c1f4df483e248a1026b9b6525ab17a932c9152a1b40e853d042c
+    name: laravel-frankenphp
+    type: application
+    urls:
+    - https://github.com/bluefire-lab/charts/releases/download/laravel-frankenphp-0.1.4/laravel-frankenphp-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-11-30T02:34:42.180057597Z"
     description: A Helm chart for Kubernetes
     digest: b26760940719da0046890da8d5b2cf56aaacda571d115f1cb21653afede231f4
@@ -583,4 +593,4 @@ entries:
     urls:
     - https://github.com/bluefire-lab/charts/releases/download/wordpress-0.1.0/wordpress-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-30T02:34:42.180191631Z"
+generated: "2025-11-30T02:39:22.148808213Z"
