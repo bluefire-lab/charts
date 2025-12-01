@@ -63,19 +63,15 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
-            - name: app
-              mountPath: /app
             - name: php-ini-config
               mountPath: /usr/local/etc/php/conf.d/99-docker-overrides.ini
               subPath: php.ini
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
-        - name: app
-          emptyDir: {}
         - name: php-ini-config
           configMap:
             name: {{ if .Values.phpIni.configName }} {{ .Values.phpIni.configName }} {{ else }} {{ .Release.Name }}-php-ini-config {{ end }}
