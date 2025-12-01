@@ -64,7 +64,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: php-ini-config
+            - name: {{ .Release.Name }}-php-ini-config
               mountPath: /usr/local/etc/php/conf.d/99-docker-overrides.ini
               subPath: php.ini
           {{- with .Values.volumeMounts }}
