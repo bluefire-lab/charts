@@ -70,6 +70,11 @@ spec:
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.postStart.command | nindent 18 }}
       volumes:
         - name: php-ini-config
           configMap:
