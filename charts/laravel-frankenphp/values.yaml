@@ -219,13 +219,15 @@ scheduler:
 
   # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
   livenessProbe:
-    httpGet:
-      path: /
-      port: http
+    exec:
+      command:
+        - php
+        - -v
   readinessProbe:
-    httpGet:
-      path: /
-      port: http
+    exec:
+      command:
+        - php
+        - -v
 
   securityContext: {}
     # capabilities:
@@ -238,14 +240,14 @@ scheduler:
   command:
     - "sh"
     - "-c"
-    - "while true; do php /var/www/html/artisan schedule:run --verbose --no-interaction & sleep 60; done"
+    - "php /var/www/html/artisan schedule:work"
 
   # Lifecycle hooks for the scheduler container
   postStart:
     command:
       - /bin/sh
       - -c
-      - echo "Post-start hook executed"
+      - echo "Scheduler post-start hook executed"
 
 queue:
   # Enable the Laravel queue sidecar container.
@@ -266,13 +268,15 @@ queue:
 
   # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
   livenessProbe:
-    httpGet:
-      path: /
-      port: http
+    exec:
+      command:
+        - php
+        - -v
   readinessProbe:
-    httpGet:
-      path: /
-      port: http
+    exec:
+      command:
+        - php
+        - -v
 
   securityContext: {}
     # capabilities:
@@ -285,11 +289,11 @@ queue:
   command:
     - "sh"
     - "-c"
-    - "php /var/www/html/artisan queue:work --verbose --no-interaction --tries=3"
+    - "php /var/www/html/artisan queue:work"
 
   # Lifecycle hooks for the queue container
   postStart:
     command:
       - /bin/sh
       - -c
-      - echo "Post-start hook executed"
+      - echo "Queue post-start hook executed"
