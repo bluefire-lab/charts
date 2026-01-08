@@ -75,6 +75,83 @@ spec:
               exec:
                 command:
                   {{- toYaml .Values.postStart.command | nindent 18 }}
+
+        {{- if .Values.scheduler.enabled }}
+        - name: scheduler
+          {{- with .Values.scheduler.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.envSecretName }} {{ .Values.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+          {{- with .Values.scheduler.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.scheduler.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.scheduler.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: php-ini-config
+              mountPath: /usr/local/etc/php/conf.d/99-docker-overrides.ini
+              subPath: php.ini
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command: {{- if .Values.scheduler.command }} {{ toJson .Values.scheduler.command }} {{ else }} ["php", "/var/www/artisan", "schedule:work", "--verbose", "--no-interaction", "--tries=3"] {{ end }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.scheduler.postStart.command | nindent 18 }}
+        {{- end }}
+
+        {{- if .Values.queue.enabled }}
+        - name: queue
+          {{- with .Values.queue.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ if .Values.envSecretName }} {{ .Values.envSecretName }} {{ else }} {{ .Release.Name }}-env {{ end }}
+          {{- with .Values.queue.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.queue.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.queue.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: php-ini-config
+              mountPath: /usr/local/etc/php/conf.d/99-docker-overrides.ini
+              subPath: php.ini
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command: {{- if .Values.queue.command }} {{ toJson .Values.queue.command }} {{ else }} ["php", "/var/www/artisan", "queue:work", "--verbose", "--no-interaction", "--tries=3"] {{ end }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  {{- toYaml .Values.queue.postStart.command | nindent 18 }}
+        {{- end }}
+
       volumes:
         - name: php-ini-config
           configMap:
