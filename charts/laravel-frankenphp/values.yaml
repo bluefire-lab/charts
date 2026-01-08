@@ -238,9 +238,9 @@ scheduler:
     # runAsUser: 1000
 
   command:
-    - "sh"
-    - "-c"
-    - "php /var/www/html/artisan schedule:work"
+    - php
+    - artisan
+    - schedule:work
 
   # Lifecycle hooks for the scheduler container
   postStart:
@@ -287,9 +287,9 @@ queue:
     # runAsUser: 1000
 
   command:
-    - "sh"
-    - "-c"
-    - "php /var/www/html/artisan queue:work"
+    - php
+    - artisan
+    - queue:work
 
   # Lifecycle hooks for the queue container
   postStart:
