@@ -171,3 +171,12 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- range . }}
+        - {{- toYaml (omit . "labelSelector") | nindent 10 }}
+          labelSelector:
+            matchLabels:
+              {{- include "laravel-frankenphp.selectorLabels" $ | nindent 14 }}
+        {{- end }}
+      {{- end }}

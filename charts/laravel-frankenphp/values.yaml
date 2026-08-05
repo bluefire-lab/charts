@@ -165,6 +165,13 @@ tolerations: []
 
 affinity: {}
 
+# labelSelector is always set by the chart to this release's own selector labels,
+# so it does not need to (and should not) be specified here.
+topologySpreadConstraints: []
+  # - maxSkew: 1
+  #   topologyKey: eks.amazonaws.com/capacityType
+  #   whenUnsatisfiable: ScheduleAnyway
+
 # Infisical integration configuration
 infisical:
   create: true
