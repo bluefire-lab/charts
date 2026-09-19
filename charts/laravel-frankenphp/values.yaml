@@ -146,6 +146,18 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+# PodDisruptionBudget for the Deployment. Disabled by default.
+# Set either maxUnavailable or minAvailable (integer or percentage, e.g. 1 or 25%);
+# minAvailable takes precedence when both are set.
+# The default (maxUnavailable: 1) is safe at any replica count, including replicaCount: 1.
+# https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+pdb:
+  enabled: false
+  maxUnavailable: 1
+  # minAvailable: 1
+  # Set to AlwaysAllow so pods that are not Ready can still be evicted (k8s >= 1.27).
+  # unhealthyPodEvictionPolicy: AlwaysAllow
+
 # Additional volumes on the output Deployment definition.
 volumes: []
   # - name: foo

@@ -1,0 +1,20 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "laravel-frankenphp.fullname" . }}
+  labels:
+    {{- include "laravel-frankenphp.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "laravel-frankenphp.selectorLabels" . | nindent 6 }}
+  {{- if .Values.pdb.minAvailable }}
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  {{- else }}
+  maxUnavailable: {{ required "pdb.enabled is true: set pdb.minAvailable or pdb.maxUnavailable" .Values.pdb.maxUnavailable }}
+  {{- end }}
+  {{- with .Values.pdb.unhealthyPodEvictionPolicy }}
+  unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
+{{- end }}
